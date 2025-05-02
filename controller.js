@@ -13,11 +13,36 @@ exports.getAllContacts = async function getAll(req, res) {
     }
 }
 
+// exports.createContact = async function create(req, res) {
+//     const { name, phone_num } = req.body;
+
+//     if (!name || !phone_num) {
+//         return res.status(400).json({ message: 'Name and Phone Number are required' });
+//     }
+
+//     try {
+//         const result = await pg.query(
+//             'INSERT INTO Contacts(name, phone_num) VALUES($1, $2) RETURNING *',
+//             [name, phone_num]
+//         );
+//     res.status(201).json(result.rows[0]);
+//     } catch (error) {
+//         console.error('Error inserting contact:', error);
+//         res.status(500).json({ message: 'Internal Server Error' });
+//     }
+// }
+
 exports.createContact = async function create(req, res) {
     const { name, phone_num } = req.body;
 
+    const phoneRegex = /^08\d{8,11}$/;
+
     if (!name || !phone_num) {
         return res.status(400).json({ message: 'Name and Phone Number are required' });
+    }
+
+    if (!phoneRegex.test(phone_num)) {
+        return res.status(400).json({ message: 'Invalid phone number format.' });
     }
 
     try {
@@ -25,12 +50,13 @@ exports.createContact = async function create(req, res) {
             'INSERT INTO Contacts(name, phone_num) VALUES($1, $2) RETURNING *',
             [name, phone_num]
         );
-    res.status(201).json(result.rows[0]);
+        res.status(201).json(result.rows[0]);
     } catch (error) {
         console.error('Error inserting contact:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
-}
+};
+
 
 exports.deleteContact = async function deleteStore(req, res) {
     const { id } = req.params;
