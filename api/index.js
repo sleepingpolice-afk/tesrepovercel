@@ -3,26 +3,23 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
 
-const routes = require("../routes"); // Adjust path if needed
-
+const routes = require("../routes"); // Make sure this path is correct
 dotenv.config();
 
 const app = express();
 
-var corsOption = {
-    //origin: 'http://localhost:5433/',
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-}
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
 
-app.use(cors(corsOption));
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
-
 app.use("/", routes);
-app.options("*", cors(corsOption));
 
-// Export as a handler for Vercel
-module.exports = app;
+// ✅ Export the Express app as a Vercel-compatible handler
+const serverless = require("serverless-http");
+module.exports = serverless(app);
