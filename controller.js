@@ -50,7 +50,7 @@ exports.createContact = async function create(req, res) {
             'INSERT INTO Contacts(name, phone_num) VALUES($1, $2) RETURNING *',
             [name, phone_num]
         );
-        res.status(201).json(result.rows[0]);
+        res.status(201).json({success: true, payload: result.rows[0]});
     } catch (error) {
         console.error('Error inserting contact:', error);
         res.status(500).json({ message: 'Internal Server Error' });
