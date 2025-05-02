@@ -9,12 +9,13 @@ dotenv.config();
 
 const app = express();
 
-const corsOption = {
-    origin: "*", 
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-};
-
+var corsOption = {
+    //origin: 'http://localhost:5433/',
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+}
 
 app.use(cors(corsOption));
 app.use(bodyParser.json());
