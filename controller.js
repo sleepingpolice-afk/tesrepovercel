@@ -38,11 +38,11 @@ exports.createContact = async function create(req, res) {
     const phoneRegex = /^08\d{8,11}$/;
 
     if (!name || !phone_num) {
-        return res.status(400).json({ message: 'Name and Phone Number are required' });
+        return res.status(400).json({ success: false, message: 'Name and Phone Number are required' });
     }
 
     if (!phoneRegex.test(phone_num)) {
-        return res.status(400).json({ message: 'Invalid phone number format.' });
+        return res.status(400).json({ success: false, message: 'Invalid phone number format.' });
     }
 
     try {
