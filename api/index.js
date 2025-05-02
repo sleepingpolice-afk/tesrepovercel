@@ -9,11 +9,19 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+const corsOption = {
+    origin: "*", 
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+};
+
+
+app.use(cors(corsOption));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/", routes);
+app.options("*", cors(corsOption));
 
 // Export as a handler for Vercel
 module.exports = app;
